@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    public PlayerHealth playerHealth;
     public NavMeshAgent agent;
     public Transform player;
     public LayerMask obstacleMask;
@@ -105,9 +106,15 @@ public class EnemyAI : MonoBehaviour
     }
 
     private void Attack() {
-        canAttack = false;
-
-        // Set a cooldown before we can attack again
+        // Check if we're close enough to attack
+        if(Vector3.Distance(transform.position, player.position) < attackRange) {
+            if(canAttack) {
+                playerHealth.TakeDamage(attackDamage);
+                canAttack = false;
+                Debug.Log("Attack!!!!!!!!! successfull suck dick");
+            }
+        }
+        
         Invoke(nameof(ResetAttack), attackCooldown);
     }
 
