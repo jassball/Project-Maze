@@ -97,11 +97,13 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(crouchKey)){
             transform.localScale = new Vector3(transform.localScale.x, crouchYscale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f,ForceMode.Impulse);
+            playerHeight = 1;
         }
 
         if(Input.GetKeyUp(crouchKey)){
             transform.localScale = new Vector3(transform.localScale.x, startYscale, transform.localScale.z);
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+            playerHeight = 2;
         }
         
     }
@@ -114,13 +116,14 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = sprintSpeed;
         }
         
+        else if(grounded && Input.GetKey(crouchKey)){
+            state = MovementState.crouching;
+            moveSpeed = crouchSpeed;
+        }
+
         else if(grounded){
             state = MovementState.walking;
             moveSpeed = walkSpeed;
-        }
-        else if(Input.GetKey(crouchKey)){
-            state = MovementState.crouching;
-            moveSpeed = crouchSpeed;
         }
 
         else{
