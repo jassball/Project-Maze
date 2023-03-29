@@ -14,6 +14,8 @@ public class PlayerCamera : MonoBehaviour
     float xRotation;
     float yRotation;
 
+    public PlayerHealth playerHealth;
+
     // Start is called before the first frame update
     void Start() {
         Cursor.lockState = CursorLockMode.Locked;
@@ -22,8 +24,9 @@ public class PlayerCamera : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        
-        // Get mouse input
+        if (playerHealth.currentHealth > 0)
+        {
+         // Get mouse input
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
 
@@ -34,6 +37,8 @@ public class PlayerCamera : MonoBehaviour
 
         // Rotate camera and orientation
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
+        orientation.rotation = Quaternion.Euler(0, yRotation, 0);   
+        }
+        
     }
 }
