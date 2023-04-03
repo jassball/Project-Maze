@@ -11,22 +11,29 @@ public class EnemyAI : MonoBehaviour
     public LayerMask obstacleMask;
 
     // Patrolling
+    [Header("Patrolling")]
     private bool patrolling = true;
     private Vector3 currentDestination;
     public float patrolRange;
     public float patrolSpeed;
 
     // Detection
+    [Header("Detection")]
     public float detectionRange;
     public float detectionSpeed;
     private bool playerDetected = false;
     public LineRenderer lineRenderer;
 
     // Attack
+    [Header("Attack")]
     public float attackRange;
     public float attackDamage;
     public float attackCooldown;
     private bool canAttack = true;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip movingSound;
 
     private void Start()
     {
@@ -87,12 +94,38 @@ public class EnemyAI : MonoBehaviour
             lineRenderer.SetPositions(new Vector3[] { transform.position, player.position });
         }
 
-        if(patrolling) {
+        if (patrolling)
+        {
             agent.speed = patrolSpeed;
-        } else if(playerDetected) {
+
+            // Play moving sound if the enemy is patrolling
+            if (!audioSource.isPlaying)
+            {
+                audioSource.clip = movingSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+        }
+        else if (playerDetected)
+        {
             agent.speed = detectionSpeed;
+
+            // Play moving sound if the enemy is moving towards the player
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+        }
+        else
+        {
+            // Stop moving sound if the enemy is not moving
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
         }
     }
+    
 
     private bool CanSeePlayer() {
         // Check if the player is within detection range

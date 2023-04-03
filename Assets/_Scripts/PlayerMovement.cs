@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -36,6 +37,10 @@ public class PlayerMovement : MonoBehaviour
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
     private bool exitingSlope;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip walkingSound;
 
     public Transform orientation;
 
@@ -128,9 +133,22 @@ public class PlayerMovement : MonoBehaviour
         else if(grounded){
             state = MovementState.walking;
             moveSpeed = walkSpeed;
-        }
-
-        else{
+            
+            // Play walking sound only when the character is moving
+            if ((horizontalInput != 0 || verticalInput != 0) && !audioSource.isPlaying) {
+                audioSource.clip = walkingSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            } else if (horizontalInput == 0 && verticalInput == 0) {
+                // Stop walking sound if the character is not moving
+                if (audioSource.isPlaying) {
+                    audioSource.Stop();
+                }
+            }
+        } else {
+            if (audioSource.isPlaying) {
+                audioSource.Stop();
+            }
             state = MovementState.air;
         }
     }
