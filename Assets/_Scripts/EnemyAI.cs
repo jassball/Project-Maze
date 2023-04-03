@@ -14,9 +14,11 @@ public class EnemyAI : MonoBehaviour
     private bool patrolling = true;
     private Vector3 currentDestination;
     public float patrolRange;
+    public float patrolSpeed;
 
     // Detection
     public float detectionRange;
+    public float detectionSpeed;
     private bool playerDetected = false;
     public LineRenderer lineRenderer;
 
@@ -84,6 +86,12 @@ public class EnemyAI : MonoBehaviour
         if (playerDetected) {
             lineRenderer.SetPositions(new Vector3[] { transform.position, player.position });
         }
+
+        if(patrolling) {
+            agent.speed = patrolSpeed;
+        } else if(playerDetected) {
+            agent.speed = detectionSpeed;
+        }
     }
 
     private bool CanSeePlayer() {
@@ -123,12 +131,20 @@ public class EnemyAI : MonoBehaviour
     }
 
     private Vector3 GetRandomPositionInMaze() {
-        // Get a random position within the patrol range
+        NavMeshHit hit;
+
+        // Get a random point on the NavMesh within the patrol range
+        while (true)
+        {
         Vector3 randomDirection = Random.insideUnitSphere * patrolRange;
         randomDirection += transform.position;
-        NavMeshHit hit;
-        NavMesh.SamplePosition(randomDirection, out hit, patrolRange, 1);
-        return hit.position;
+
+        // Check if the position is on the NavMesh
+        if (NavMesh.SamplePosition(randomDirection, out hit, patrolRange, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+    }
     }
 }
 
