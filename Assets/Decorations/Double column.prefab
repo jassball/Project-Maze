@@ -44,6 +44,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Column_Half (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4611546835596687341, guid: f8c0297a8d99e2747baeb5697c8ecb66, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a366b47728a5b834eabd2d20e747a0a2, type: 2}
     - target: {fileID: 8582451509887590953, guid: f8c0297a8d99e2747baeb5697c8ecb66, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -106,6 +110,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Column_Half
       objectReference: {fileID: 0}
+    - target: {fileID: 4611546835596687341, guid: f8c0297a8d99e2747baeb5697c8ecb66, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a366b47728a5b834eabd2d20e747a0a2, type: 2}
     - target: {fileID: 8582451509887590953, guid: f8c0297a8d99e2747baeb5697c8ecb66, type: 3}
       propertyPath: m_RootOrder
       value: 0
