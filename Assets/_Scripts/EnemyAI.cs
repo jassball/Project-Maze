@@ -152,7 +152,7 @@ public class EnemyAI : MonoBehaviour
             if(canAttack) {
                 playerHealth.TakeDamage(attackDamage);
                 canAttack = false;
-                Debug.Log("Attack!!!!!!!!! successfull suck dick");
+                Debug.Log("Attack!");
             }
         }
         
