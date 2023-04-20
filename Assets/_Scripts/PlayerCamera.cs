@@ -40,8 +40,8 @@ public class PlayerCamera : MonoBehaviour
         if (playerHealth.currentHealth > 0 && canProcessInput)
         {
             // Get mouse input
-            float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
-            float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+            float mouseX = Input.GetAxisRaw("Mouse X") * sensX * Time.fixedDeltaTime;
+            float mouseY = Input.GetAxisRaw("Mouse Y") * sensY * Time.fixedDeltaTime;
 
             yRotation += mouseX;
             xRotation -= mouseY;
