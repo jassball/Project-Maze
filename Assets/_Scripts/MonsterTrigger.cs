@@ -25,6 +25,11 @@ public class MonsterTrigger : MonoBehaviour
         {
             monster.transform.position = Vector3.MoveTowards(monster.transform.position, endPosition, speed * Time.deltaTime);
         }
+        else if (isMoving)
+        {
+            isMoving = false;
+            monster.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
