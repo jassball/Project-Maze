@@ -11,11 +11,12 @@ public class MonsterTrigger : MonoBehaviour
 
     private bool hasTriggered = false;
     private bool isMoving = false;
+    private Collider triggerCollider;
 
     // Start is called before the first frame update
     void Start()
     {
-        monster.transform.position = startPosition;
+        triggerCollider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -24,6 +25,10 @@ public class MonsterTrigger : MonoBehaviour
         if (isMoving && Vector3.Distance(monster.transform.position, endPosition) > 0.1f)
         {
             monster.transform.position = Vector3.MoveTowards(monster.transform.position, endPosition, speed * Time.deltaTime);
+
+            Vector3 direction = endPosition - monster.transform.position;
+
+            monster.transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
         }
         else if (isMoving)
         {
@@ -36,8 +41,11 @@ public class MonsterTrigger : MonoBehaviour
     {
         if (!hasTriggered && other.CompareTag("Player"))
         {
+            monster.SetActive(true);
+            monster.transform.position = startPosition;
             isMoving = true;
             hasTriggered = true;
+            triggerCollider.enabled = false;
         }
     }
 }
