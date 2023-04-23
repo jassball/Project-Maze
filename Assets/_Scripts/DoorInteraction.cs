@@ -56,7 +56,7 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
-    void TryOpenDoor()
+    public void TryOpenDoor()
     {
         if (keyPickupScript.keyUIImage.gameObject.activeInHierarchy)
         {
