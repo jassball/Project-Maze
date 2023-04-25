@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class PickupSwitchPart : MonoBehaviour
 {
@@ -7,7 +8,12 @@ public class PickupSwitchPart : MonoBehaviour
     public LayerMask whatIsPlayer;
     private bool playerInRange = false;
     public SwitchPartsCollector switchPartsCollector;
+    public GameObject monsterSpawn;
 
+    void Start()
+    {
+        monsterSpawn.SetActive(false);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if ((whatIsPlayer.value & (1 << other.gameObject.layer)) > 0)
@@ -23,6 +29,7 @@ public class PickupSwitchPart : MonoBehaviour
         {
             switchPartsCollector.CollectSwitchPart();
             pickupText.gameObject.SetActive(false);
+            monsterSpawn.SetActive(true);
             Destroy(gameObject);
         }
     }
@@ -35,4 +42,6 @@ public class PickupSwitchPart : MonoBehaviour
             pickupText.gameObject.SetActive(false);
         }
     }
+
+    
 }
