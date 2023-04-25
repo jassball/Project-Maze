@@ -34,6 +34,8 @@ public class EnemyAI : MonoBehaviour
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip movingSound;
+    public AudioClip JumpScare;
+
 
     private void Start()
     {
@@ -111,7 +113,7 @@ public class EnemyAI : MonoBehaviour
             agent.speed = detectionSpeed;
 
             // Play moving sound if the enemy is moving towards the player
-            if (audioSource.isPlaying)
+            if (audioSource.isPlaying && audioSource.clip == movingSound)
             {
                 audioSource.Stop();
             }
@@ -119,7 +121,7 @@ public class EnemyAI : MonoBehaviour
         else
         {
             // Stop moving sound if the enemy is not moving
-            if (audioSource.isPlaying)
+            if (audioSource.isPlaying && audioSource.clip == movingSound)
             {
                 audioSource.Stop();
             }
@@ -153,9 +155,12 @@ public class EnemyAI : MonoBehaviour
                 playerHealth.TakeDamage(attackDamage);
                 canAttack = false;
                 Debug.Log("Attack!");
+                
             }
         }
-        
+        audioSource.clip = JumpScare;
+        audioSource.loop = false;
+        audioSource.Play();
         Invoke(nameof(ResetAttack), attackCooldown);
     }
 
