@@ -33,6 +33,8 @@ public class EnemyAI : MonoBehaviour
     public AudioClip movingSound;
     public AudioClip JumpScare;
     public AudioClip screamSound;
+    public float screamCooldown = 20f;
+    private bool canScream = true;
 
     [Header("Movement Update Interval")]
     public float movementUpdateInterval = 0.1f;
@@ -52,6 +54,7 @@ public class EnemyAI : MonoBehaviour
         audioSource.clip = movingSound;
         audioSource.loop = true;
         audioSource.Play();
+        canScream = true;
     }
 
     private IEnumerator ActiveTimer()
@@ -130,14 +133,29 @@ public class EnemyAI : MonoBehaviour
             if (!playerDetected)
             {
                 playerDetected = true;
-                audioSource.clip = screamSound;
-                audioSource.loop = false;
-                audioSource.Play();
+
+                if(canScream){
+                  audioSource.clip = screamSound;
+                  audioSource.loop = false;
+                  audioSource.Play(); 
+                  canScream = false;
+                  StartCoroutine(ScreamCooldownTimer());
+
+                }else{
+                    return false;
+                }
+                
             }
             return true;
         }
     }
     return false;
+}
+
+private IEnumerator ScreamCooldownTimer()
+{
+    yield return new WaitForSeconds(screamCooldown);
+    canScream = true;
 }
 
     private void Attack()
