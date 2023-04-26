@@ -10,6 +10,7 @@ public class DoorInteraction : MonoBehaviour
     public KeyPickup keyPickupScript;
     public float rotationAngle = 90f;
     public float rotationSpeed = 2f;
+    public AudioSource openDoorSound;
 
     private bool playerInRange = false;
     private bool doorOpened = false;
@@ -65,6 +66,9 @@ public class DoorInteraction : MonoBehaviour
 
             // Open the door
             doorOpened = true;
+
+            // Play the open door sound
+            openDoorSound.Play();
 
             // Deactivate the interactText
             interactText.gameObject.SetActive(false);

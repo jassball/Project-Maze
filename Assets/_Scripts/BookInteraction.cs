@@ -8,6 +8,8 @@ public class BookInteraction : MonoBehaviour
     public Image bookImage;
     public LayerMask whatIsPlayer;
     public EntryMazeDoor door;
+    public AudioSource bookAudioSource; // Add this line
+    public AudioClip bookOpenSound; // Add this line
 
     private bool isPlayerInRange = false;
     private bool isBookOpen = false;
@@ -48,11 +50,16 @@ public class BookInteraction : MonoBehaviour
             bookImage.gameObject.SetActive(isBookOpen);
             UpdatePromptText();
 
+            if (isBookOpen) // Add this block
+            {
+                bookAudioSource.clip = bookOpenSound;
+                bookAudioSource.Play();
+            }
+
             if(!hasOpenedDoor && isBookOpen) {
                 door.Open();
                 hasOpenedDoor = true;
             }
-
         }
     }
 
