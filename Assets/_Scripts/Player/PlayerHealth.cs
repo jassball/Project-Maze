@@ -62,6 +62,6 @@ public class PlayerHealth : MonoBehaviour
     private void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        Time.timeScale = 1f; // Resume the game
+        Time.timeScale = 1f;
     }
 }
