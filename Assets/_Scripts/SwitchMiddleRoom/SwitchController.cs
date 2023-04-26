@@ -17,6 +17,14 @@ public class SwitchController : MonoBehaviour
     private Quaternion hatchTargetRotation;
     private float rotationStartTime;
 
+    public GameObject door1;
+    public GameObject door2;
+    public float doorMovementDistance = 3f;
+    private Vector3 door1InitialPosition;
+    private Vector3 door1TargetPosition;
+    private Vector3 door2InitialPosition;
+    private Vector3 door2TargetPosition;
+
     private void Start()
     {
         promptText.gameObject.SetActive(false);
@@ -50,8 +58,16 @@ public class SwitchController : MonoBehaviour
             hatchInitialRotation = hatch.transform.rotation;
             hatchTargetRotation = hatchInitialRotation * Quaternion.Euler(90, 0, 0);
 
+            door1InitialPosition = door1.transform.localPosition;
+            door1TargetPosition = door1InitialPosition + new Vector3(0, -doorMovementDistance, 0);
+
+            door2InitialPosition = door2.transform.localPosition;
+            door2TargetPosition = door2InitialPosition + new Vector3(0, -doorMovementDistance, 0);
+
             rotationStartTime = Time.time;
             hasSwitched = true;
+
+            Debug.Log("Switch activated");
         }
 
         if (hasSwitched && Time.time <= rotationStartTime + rotationDuration)
@@ -59,6 +75,13 @@ public class SwitchController : MonoBehaviour
             float t = (Time.time - rotationStartTime) / rotationDuration;
             lever.transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, t);
             hatch.transform.rotation = Quaternion.Lerp(hatchInitialRotation, hatchTargetRotation, t);
+
+            float tt = (Time.time - rotationStartTime) / rotationDuration;
+            door1.transform.localPosition = Vector3.Lerp(door1InitialPosition, door1TargetPosition, tt);
+            door2.transform.localPosition = Vector3.Lerp(door2InitialPosition, door2TargetPosition, tt);
+
+            Debug.Log("Door 1 Position: " + door1.transform.localPosition);
+            Debug.Log("Door 2 Position: " + door2.transform.localPosition);
         }
         else if (hasSwitched && promptText.gameObject.activeSelf)
         {
