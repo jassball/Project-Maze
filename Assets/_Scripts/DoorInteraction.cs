@@ -10,19 +10,23 @@ public class DoorInteraction : MonoBehaviour
     public KeyPickup keyPickupScript;
     public float rotationAngle = 90f;
     public float rotationSpeed = 2f;
-    public AudioSource openDoorSound;
 
     private bool playerInRange = false;
     private bool doorOpened = false;
     private bool interactionDisabled = false;
     private Quaternion closedRotation;
     private Quaternion openRotation;
+    public AudioClip soundClip1;
+    private AudioSource audioSource;
+    public GameObject jailSound;
+    public AudioClip soundClip2;
 
     void Start()
-    {
+    {   
         interactText.gameObject.SetActive(false);
         closedRotation = transform.rotation;
         openRotation = Quaternion.Euler(transform.eulerAngles + new Vector3(0, rotationAngle, 0));
+        audioSource = GetComponent<AudioSource>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -64,16 +68,16 @@ public class DoorInteraction : MonoBehaviour
             // Set the keyUIImage to false to show the key is used.
             keyPickupScript.keyUIImage.gameObject.SetActive(false);
 
-            // Open the door
-            doorOpened = true;
+            // Play soundClip1
+            audioSource.clip = soundClip1;
+            audioSource.Play();
 
-            // Play the open door sound
-            openDoorSound.Play();
+            // Wait for soundClip1 to finish before opening door
+            Invoke("OpenDoorAfterSoundClip1", soundClip1.length);
 
-            // Deactivate the interactText
+
+            // Set interactText to false and disable further interactions
             interactText.gameObject.SetActive(false);
-
-            // Disable further interactions
             interactionDisabled = true;
         }
         else
@@ -83,9 +87,28 @@ public class DoorInteraction : MonoBehaviour
         }
     }
 
+    void OpenDoorAfterSoundClip1()
+    {
+        doorOpened = true;
+
+    }
+
     void OpenDoor()
     {
+    if (jailSound != null && jailSound.GetComponent<AudioSource>() != null)
+        {
+            AudioSource jailSoundAudio = jailSound.GetComponent<AudioSource>();
+
+            // Play the jailSound clip
+         if (!jailSoundAudio.isPlaying)
+            {
+                jailSoundAudio.clip = soundClip2;
+                jailSoundAudio.Play();
+                Destroy(jailSound, soundClip2.length);
+            }
+        }
         transform.rotation = Quaternion.Lerp(transform.rotation, openRotation, Time.deltaTime * rotationSpeed);
+        
     }
 
     bool IsPlayerLayer(GameObject obj)

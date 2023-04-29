@@ -9,11 +9,16 @@ public class PickupSwitchPart : MonoBehaviour
     private bool playerInRange = false;
     public SwitchPartsCollector switchPartsCollector;
     public GameObject monsterSpawn;
+    public GameObject pickUpPartSound;
+
+    private AudioSource audioSource;
 
     void Start()
     {
         monsterSpawn.SetActive(false);
+        audioSource = pickUpPartSound.GetComponent<AudioSource>();
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if ((whatIsPlayer.value & (1 << other.gameObject.layer)) > 0)
@@ -30,6 +35,7 @@ public class PickupSwitchPart : MonoBehaviour
             switchPartsCollector.CollectSwitchPart();
             pickupText.gameObject.SetActive(false);
             monsterSpawn.SetActive(true);
+            audioSource.Play();
             Destroy(gameObject);
         }
     }
@@ -42,6 +48,4 @@ public class PickupSwitchPart : MonoBehaviour
             pickupText.gameObject.SetActive(false);
         }
     }
-
-    
 }

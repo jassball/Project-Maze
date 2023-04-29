@@ -46,6 +46,7 @@ public class SwitchBuilder : MonoBehaviour
         {
             BuildSwitch();
             collectedPartsText.gameObject.SetActive(false);
+            
         }
 
         if (switchBuilt && interactionText.gameObject.activeSelf)

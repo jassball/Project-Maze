@@ -10,6 +10,8 @@ public class BookInteraction : MonoBehaviour
     public EntryMazeDoor door;
     public AudioSource bookAudioSource; // Add this line
     public AudioClip bookOpenSound; // Add this line
+    public GameObject EntryDoorSound;
+    public AudioClip OpenDoorSound; 
 
     private bool isPlayerInRange = false;
     private bool isBookOpen = false;
@@ -59,6 +61,8 @@ public class BookInteraction : MonoBehaviour
             if(!hasOpenedDoor && isBookOpen) {
                 door.Open();
                 hasOpenedDoor = true;
+                EntryDoorSound.GetComponent<AudioSource>().clip = OpenDoorSound;
+                EntryDoorSound.GetComponent<AudioSource>().Play();
             }
         }
     }
