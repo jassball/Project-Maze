@@ -25,9 +25,16 @@ public class SwitchController : MonoBehaviour
     private Vector3 door2InitialPosition;
     private Vector3 door2TargetPosition;
 
+    public AudioSource hatchAudio;
+    public AudioSource door1Audio;
+    public AudioSource door2Audio;
+
     private void Start()
     {
         promptText.gameObject.SetActive(false);
+        hatchAudio = hatch.GetComponent<AudioSource>();
+        door1Audio = door1.GetComponent<AudioSource>();
+        door2Audio = door2.GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -67,6 +74,10 @@ public class SwitchController : MonoBehaviour
             rotationStartTime = Time.time;
             hasSwitched = true;
 
+            hatchAudio.Play();
+            door1Audio.Play();
+            door2Audio.Play();
+
             Debug.Log("Switch activated");
         }
 
@@ -75,11 +86,13 @@ public class SwitchController : MonoBehaviour
             float t = (Time.time - rotationStartTime) / rotationDuration;
             lever.transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, t);
             hatch.transform.rotation = Quaternion.Lerp(hatchInitialRotation, hatchTargetRotation, t);
+            
 
             float tt = (Time.time - rotationStartTime) / rotationDuration;
             door1.transform.localPosition = Vector3.Lerp(door1InitialPosition, door1TargetPosition, tt);
             door2.transform.localPosition = Vector3.Lerp(door2InitialPosition, door2TargetPosition, tt);
-
+            float door1CurrentPosition = Vector3.Lerp(door1InitialPosition, door1TargetPosition, t).y;
+            
             Debug.Log("Door 1 Position: " + door1.transform.localPosition);
             Debug.Log("Door 2 Position: " + door2.transform.localPosition);
         }
@@ -87,5 +100,8 @@ public class SwitchController : MonoBehaviour
         {
             promptText.gameObject.SetActive(false);
         }
+
+       
     }
+    
 }
