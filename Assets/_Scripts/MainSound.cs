@@ -6,8 +6,10 @@ public class MainSound : MonoBehaviour
 {
     public GameObject soundPlayer;
     public GameObject monster;
+    public GameObject phase4Monster;
     public AudioClip mainAmbience;
     public AudioClip chaseMusic;
+    public AudioClip phase4Music;
     public float chaseVolume;
     // Start is called before the first frame update
     void Start()
@@ -28,9 +30,15 @@ public class MainSound : MonoBehaviour
         audioSource.volume = chaseVolume;
         audioSource.Play();
     }
-    else if (!monster.activeSelf  && audioSource.clip != mainAmbience)
+    else if (!monster.activeSelf  && audioSource.clip != mainAmbience && !phase4Monster.activeSelf)
     {
         audioSource.clip = mainAmbience;
+        audioSource.volume = 0.15f;
+        audioSource.Play();
+    }
+    else if(phase4Monster.activeSelf && audioSource.clip != phase4Music)
+    {
+        audioSource.clip = phase4Music;
         audioSource.volume = 0.15f;
         audioSource.Play();
     }
