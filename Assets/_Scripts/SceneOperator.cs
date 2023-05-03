@@ -19,7 +19,7 @@ public class SceneOperator : MonoBehaviour
 
     public void PlayGame()
     {
-        StartCoroutine(DelayedSceneSwitch("Level 1",1.5f));
+        StartCoroutine(DelayedSceneSwitch("Level 1",1.8f));
         Debug.Log("sceneSwitch!");
     }
 
