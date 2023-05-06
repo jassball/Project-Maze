@@ -3,19 +3,20 @@ using UnityEngine;
 
 public class DoorCloseOnTrigger : MonoBehaviour
 {
-    public GameObject door; 
-    public float openAngle = -90.0f; 
-    public float closeAngle = 150.0f; 
-    public float doorCloseTime = 0.5f; 
-    public AudioClip doorCloseSound; 
+    public GameObject door;
+    public float openAngle = -90.0f;
+    public float closeAngle = 150.0f;
+    public float doorCloseTime = 0.5f;
+    public AudioClip doorCloseSound;
 
-    private bool isOpen = false; 
+    private bool isOpen = false;
     private AudioSource audioSource;
+    private Collider doorCollider;
 
     private void Start()
     {
-        
         audioSource = door.GetComponent<AudioSource>();
+        doorCollider = GetComponent<Collider>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -24,6 +25,7 @@ public class DoorCloseOnTrigger : MonoBehaviour
         {
             isOpen = true;
             StartCoroutine(RotateDoor(openAngle));
+            doorCollider.enabled = false; // Disable the collider
         }
     }
 

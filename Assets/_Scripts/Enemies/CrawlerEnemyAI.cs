@@ -49,6 +49,7 @@ public class CrawlerEnemyAI : MonoBehaviour
         {
             playerDetected = false;
             agent.speed = patrolSpeed;
+            FindClosestPatrolPoint();
             Patrol();
         }
         else if (!playerDetected)
@@ -98,6 +99,24 @@ public class CrawlerEnemyAI : MonoBehaviour
         }
 
         agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+    }
+
+    private void FindClosestPatrolPoint()
+    {
+        int closestIndex = 0;
+        float closestDistance = float.MaxValue;
+
+        for (int i = 0; i < patrolPoints.Count; i++)
+        {
+            float distance = Vector3.Distance(transform.position, patrolPoints[i].position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestIndex = i;
+            }
+        }
+
+        currentPatrolIndex = closestIndex;
     }
 
     private void Attack()
