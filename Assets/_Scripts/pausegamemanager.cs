@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 public class pausegamemanager : MonoBehaviour
 {
     public Button resumButton;
@@ -12,6 +13,13 @@ public class pausegamemanager : MonoBehaviour
     public static bool Paused = false;
     public GameObject PauseGamePanel;
     private bool CursorWasLocked = false;
+    public PlayerHealth playerHealth;
+   
+
+    private Vector3 originalCameraPosition;
+    private Quaternion originalCameraRotation;
+
+    private GameObject playerCamHolder; // Reference to the player camera GameObject
 
     void Start()
     {
@@ -19,6 +27,8 @@ public class pausegamemanager : MonoBehaviour
         retry.onClick.AddListener(RestartGame);
         mainMenu.onClick.AddListener(MainMenuButton);
         Time.timeScale = 1f;
+
+        playerCamHolder = GameObject.Find("playerCamHolder"); // Find the player camera GameObject by name
     }
 
     // Update is called once per frame
@@ -35,6 +45,10 @@ public class pausegamemanager : MonoBehaviour
                 Stop();
             }
         }
+        if (playerHealth.currentHealth <=0)
+        {
+            PauseGamePanel.SetActive(false);
+        }
     }
 
     void Stop()
@@ -45,6 +59,15 @@ public class pausegamemanager : MonoBehaviour
         CursorWasLocked = Cursor.lockState == CursorLockMode.Locked;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+
+        // Freeze the position and rotation of the player camera
+        if (playerCamHolder != null)
+        {
+            originalCameraPosition = playerCamHolder.transform.position;
+            originalCameraRotation = playerCamHolder.transform.rotation;
+        }
+        //mute
+        AudioListener.pause = true;
     }
 
     public void Play()
@@ -58,6 +81,17 @@ public class pausegamemanager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
+
+        // Restore the position and rotation of the player camera
+        if (playerCamHolder != null)
+        {
+            playerCamHolder.transform.position = originalCameraPosition;
+            playerCamHolder.transform.rotation = originalCameraRotation;
+        }
+
+        //unmute
+        AudioListener.pause = false;
+
         Debug.Log("resumButton!!");
     }
 
