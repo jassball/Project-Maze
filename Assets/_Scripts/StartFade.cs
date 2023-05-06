@@ -28,7 +28,7 @@ public class StartFade : MonoBehaviour
             blackStarterScreen.color = new Color(0f, 0f, 0f, alpha);
             yield return null;
         }
-
+        
         // Disable the panel or image once the fade-in effect is complete
         gameObject.SetActive(false);
     }

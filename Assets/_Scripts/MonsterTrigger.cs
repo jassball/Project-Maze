@@ -12,6 +12,7 @@ public class MonsterTrigger : MonoBehaviour
     private bool hasTriggered = false;
     private bool isMoving = false;
     private Collider triggerCollider;
+    
 
     // Start is called before the first frame update
     void Start()

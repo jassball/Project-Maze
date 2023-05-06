@@ -118,40 +118,51 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    private void StateHandler() {
-        bool moving = horizontalInput != 0 || verticalInput != 0;
-        bool wasSprinting = state == MovementState.sprinting;
+   private void StateHandler() {
+    bool moving = horizontalInput != 0 || verticalInput != 0;
+    bool wasSprinting = state == MovementState.sprinting;
 
-        if (grounded && Input.GetKey(sprintKey)) {
-            state = MovementState.sprinting;
-            moveSpeed = sprintSpeed;
-        } else if (grounded && Input.GetKey(crouchKey)) {
-            state = MovementState.crouching;
-            moveSpeed = crouchSpeed;
-        } else if (grounded) {
-            state = MovementState.walking;
-            moveSpeed = walkSpeed;
-        } else {
-            state = MovementState.air;
-        }
-
-        // Handle sound transitions
-        if (wasSprinting && state != MovementState.sprinting && audioSource.clip == sprintingSound) {
-            audioSource.Stop();
-        }
-
-        if (state == MovementState.walking && moving && !audioSource.isPlaying) {
-            audioSource.clip = walkingSound;
-            audioSource.loop = true;
-            audioSource.Play();
-        } else if (state == MovementState.sprinting && moving && (!audioSource.isPlaying || audioSource.clip == walkingSound)) {
-            audioSource.clip = sprintingSound;
-            audioSource.loop = true;
-            audioSource.Play();
-        } else if ((!moving || state == MovementState.air) && audioSource.isPlaying) {
-            audioSource.Stop();
-        }
+    if (grounded && Input.GetKey(sprintKey) && !Input.GetKey(crouchKey)) {
+        state = MovementState.sprinting;
+        moveSpeed = sprintSpeed;
+    } else if (grounded && Input.GetKey(crouchKey)) {
+        state = MovementState.crouching;
+        moveSpeed = crouchSpeed;
+    } else if (grounded) {
+        state = MovementState.walking;
+        moveSpeed = walkSpeed;
+    } else {
+        state = MovementState.air;
     }
+
+    // Handle crouching from sprinting
+    if (wasSprinting && state == MovementState.crouching) {
+        moveSpeed = crouchSpeed;
+    }
+
+    // Update state to walking if the player is not crouching or sprinting
+    if (state == MovementState.crouching && !Input.GetKey(crouchKey)) {
+        state = MovementState.walking;
+        moveSpeed = walkSpeed;
+    }
+
+    // Handle sound transitions
+    if (wasSprinting && state != MovementState.sprinting && audioSource.clip == sprintingSound) {
+        audioSource.Stop();
+    }
+
+    if (state == MovementState.walking && moving && !audioSource.isPlaying) {
+        audioSource.clip = walkingSound;
+        audioSource.loop = true;
+        audioSource.Play();
+    } else if (state == MovementState.sprinting && moving && (!audioSource.isPlaying || audioSource.clip == walkingSound)) {
+        audioSource.clip = sprintingSound;
+        audioSource.loop = true;
+        audioSource.Play();
+    } else if ((!moving || state == MovementState.air) && audioSource.isPlaying) {
+        audioSource.Stop();
+    }
+}
 
     private void MovePlayer() {
 
