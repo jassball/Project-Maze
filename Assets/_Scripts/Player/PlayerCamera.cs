@@ -37,7 +37,7 @@ public class PlayerCamera : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (playerHealth.currentHealth > 0 && canProcessInput)
+        if (Time.timeScale != 0f && playerHealth.currentHealth > 0 && canProcessInput)
         {
             // Get mouse input
             float mouseX = Input.GetAxisRaw("Mouse X") * sensX * Time.fixedDeltaTime;
