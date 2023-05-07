@@ -6,7 +6,7 @@ public class TorchSound : MonoBehaviour
 {
     public AudioClip soundClip1;
     public AudioClip soundClip2;
-    public float volume; // Adjust this value in the Unity Editor to control volume
+    public float volume; 
 
     private AudioSource audioSource;
 

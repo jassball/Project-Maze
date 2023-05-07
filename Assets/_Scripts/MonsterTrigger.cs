@@ -12,6 +12,8 @@ public class MonsterTrigger : MonoBehaviour
     private bool hasTriggered = false;
     private bool isMoving = false;
     private Collider triggerCollider;
+    public GameObject phase1Monster;
+    public GameObject phase4Monster;
     
 
     // Start is called before the first frame update
@@ -40,7 +42,7 @@ public class MonsterTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!hasTriggered && other.CompareTag("Player"))
+        if (!hasTriggered && other.CompareTag("Player") && !phase1Monster.activeSelf && !phase4Monster.activeSelf)
         {
             monster.SetActive(true);
             monster.transform.position = startPosition;
