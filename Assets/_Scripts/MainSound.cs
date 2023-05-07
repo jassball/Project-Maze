@@ -29,18 +29,19 @@ public class MainSound : MonoBehaviour
         audioSource.clip = chaseMusic;
         
         audioSource.Play();
+        audioSource.volume = 0.1f;
     }
     else if (!monster.activeSelf  && audioSource.clip != mainAmbience && !phase4Monster.activeSelf)
     {
         audioSource.clip = mainAmbience;
-    
         audioSource.Play();
+        audioSource.volume = 0.15f;
     }
     else if(phase4Monster.activeSelf && audioSource.clip != phase4Music)
     {
         audioSource.clip = phase4Music;
-        
         audioSource.Play();
+        audioSource.volume = 0.15f;
     }
 }
 }
