@@ -34,7 +34,7 @@ public class pausegamemanager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && playerHealth.currentHealth >0)
         {
             if (Paused)
             {
