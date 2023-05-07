@@ -49,6 +49,7 @@ public class MonsterTrigger : MonoBehaviour
             isMoving = true;
             hasTriggered = true;
             triggerCollider.enabled = false;
+            monster.GetComponent<AudioSource>().Play();
         }
     }
 }
