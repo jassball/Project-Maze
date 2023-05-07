@@ -12,7 +12,6 @@ public class EnemyAI : MonoBehaviour
 
     // Detection
     [Header("Detection")]
-    public float detectionRange;
     public float initialSpeed;
     public float reducedSpeed;
     private bool playerDetected = false;
@@ -21,12 +20,15 @@ public class EnemyAI : MonoBehaviour
     [Header("Attack")]
     public float attackRange;
     public float attackDamage;
-    public float attackCooldown;
-    private bool canAttack = true;
 
     [Header("Active Time")]
     public float activeTime = 30f;
     private Vector3 initialPosition;
+
+    [Header("Chase Delay Timer")]
+    public float fromSecond;
+    public float toSecond;
+    private bool chaseDelayComplete = false;
 
     [Header("Audio")]
     public AudioSource audioSource;
@@ -50,7 +52,7 @@ public class EnemyAI : MonoBehaviour
     {
         agent.speed = initialSpeed;
         StartCoroutine(ActiveTimer());
-        StartCoroutine(UpdateDestination());
+        StartCoroutine(ChaseDelay());
         audioSource.clip = movingSound;
         audioSource.loop = true;
         audioSource.Play();
@@ -64,6 +66,15 @@ public class EnemyAI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private IEnumerator ChaseDelay()
+    {
+        float delay = Random.Range(fromSecond, toSecond);
+        Debug.Log(delay);
+        yield return new WaitForSeconds(delay);
+        chaseDelayComplete = true;
+        StartCoroutine(UpdateDestination());
+    }
+
     private IEnumerator UpdateDestination()
     {
         while (true)
@@ -74,32 +85,37 @@ public class EnemyAI : MonoBehaviour
                 agent.SetPath(path);
             }
 
+            if(CanSeePlayer()) {
+                agent.speed = reducedSpeed;
+            } else {
+                playerDetected = false;
+                agent.speed = initialSpeed;
+            }
+
             yield return new WaitForSeconds(movementUpdateInterval);
         }
     }
 
     private void Update()
-{
-    // Check if we can see the player
-    if (CanSeePlayer())
     {
-        agent.speed = reducedSpeed; // Set agent speed to reduced speed
-    }
-    else
-    {
-        playerDetected = false;
-        agent.speed = initialSpeed; // Set agent speed to initial speed
-    }
+    
+    if (!chaseDelayComplete) {
+        return; 
+    }    
 
     if (playerDetected)
     {
+        if(canScream) {
+            audioSource.clip = screamSound;
+            audioSource.loop = false;
+            audioSource.Play(); 
+            canScream = false;
+            StartCoroutine(ScreamCooldownTimer());
+        }
         // Check if we're close enough to attack
         if (Vector3.Distance(transform.position, player.position) < attackRange)
         {
-            if (canAttack)
-            {
-                Attack();
-            }
+            Attack();
         }
     }
 
@@ -116,16 +132,11 @@ public class EnemyAI : MonoBehaviour
 }
 
     private bool CanSeePlayer()
-{
-    // Check if the player is within detection range
-    if (Vector3.Distance(transform.position, player.position) > detectionRange)
     {
-        return false;
-    }
-
+    
     // Create a ray from the enemy to the player
     Vector3 directionToPlayer = player.position - transform.position;
-    if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, detectionRange))
+    if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit))
     {
         // Check if the hit object is the player
         if (hit.collider.gameObject.layer == LayerMask.NameToLayer("whatIsPlayer"))
@@ -133,18 +144,6 @@ public class EnemyAI : MonoBehaviour
             if (!playerDetected)
             {
                 playerDetected = true;
-
-                if(canScream){
-                  audioSource.clip = screamSound;
-                  audioSource.loop = false;
-                  audioSource.Play(); 
-                  canScream = false;
-                  StartCoroutine(ScreamCooldownTimer());
-
-                }else{
-                    return false;
-                }
-                
             }
             return true;
         }
@@ -152,33 +151,20 @@ public class EnemyAI : MonoBehaviour
     return false;
 }
 
-private IEnumerator ScreamCooldownTimer()
-{
-    yield return new WaitForSeconds(screamCooldown);
-    canScream = true;
-}
+    private IEnumerator ScreamCooldownTimer()
+    {
+        yield return new WaitForSeconds(screamCooldown);
+        canScream = true;
+    }
 
     private void Attack()
     {
-        // Check if we're close enough to attack
-        if (Vector3.Distance(transform.position, player.position) < attackRange)
-        {
-            if (canAttack)
-            {
-                playerHealth.TakeDamage(attackDamage);
-                canAttack = false;
-                Debug.Log("Attack!");
-            }
-        }
+        playerHealth.TakeDamage(attackDamage);
+        Debug.Log("Attack!");
+            
         audioSource.clip = JumpScare;
         audioSource.loop = false;
         audioSource.Play();
-        Invoke(nameof(ResetAttack), attackCooldown);
-    }
-
-    private void ResetAttack()
-    {
-        canAttack = true;
     }
 }
 
