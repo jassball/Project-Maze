@@ -13,7 +13,8 @@ public class ExitDoor : MonoBehaviour
     public GameObject player;
     public float fadeDuration = 2f; 
     public Image blackStarterScreen;
-    public AudioSource audioSource; // new public variable for the AudioSource component
+    public AudioSource audioSource; 
+    public KeyPickup keyPickupScript;
     
     private bool playerInRange = false;
     private bool interactionDisabled = false;
@@ -54,14 +55,20 @@ public class ExitDoor : MonoBehaviour
 
     public void TryOpenDoor()
     {
-        interactText.gameObject.SetActive(false);
-        interactionDisabled = true;
-        Debug.Log("player has won the game!!!Horry shit");
+        if (keyPickupScript.keyUIImage.gameObject.activeInHierarchy)
+        {
+            interactText.gameObject.SetActive(false);
+            interactionDisabled = true;
+            Debug.Log("player has won the game!!!Horry shit");
+            audioSource.Play();
         
-        // Play the audio clip
-        audioSource.Play();
+            StartCoroutine(FadeOutCoroutine());
+
+        }else
+        {
+            interactText.text = "You don't have the exit    key";
+        }
         
-        StartCoroutine(FadeOutCoroutine());
     }
 
     bool IsPlayerLayer(GameObject obj)
