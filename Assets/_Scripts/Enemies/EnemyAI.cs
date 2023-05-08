@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     [Header("Attack")]
     public float attackRange;
     public float attackDamage;
+    private bool canAttack = true;
 
     [Header("Active Time")]
     public float activeTime = 30f;
@@ -115,7 +116,7 @@ public class EnemyAI : MonoBehaviour
         // Check if we're close enough to attack
         if (Vector3.Distance(transform.position, player.position) < attackRange)
         {
-            Attack();
+            if (canAttack) {Attack();}
         }
     }
 
@@ -161,6 +162,7 @@ public class EnemyAI : MonoBehaviour
     {
         playerHealth.TakeDamage(attackDamage);
         Debug.Log("Attack!");
+        canAttack = false;
             
         audioSource.clip = JumpScare;
         audioSource.loop = false;

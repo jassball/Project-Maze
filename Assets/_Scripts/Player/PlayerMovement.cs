@@ -108,12 +108,12 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(crouchKey)){
             transform.localScale = new Vector3(transform.localScale.x, crouchYscale, transform.localScale.z);
             rb.AddForce(Vector3.down * 5f,ForceMode.Impulse);
-            playerHeight = 1;
+            playerHeight = 2;
         }
 
         if(Input.GetKeyUp(crouchKey)){
             transform.localScale = new Vector3(transform.localScale.x, startYscale, transform.localScale.z);
-            playerHeight = 2;
+            playerHeight = 3;
         }
         
     }

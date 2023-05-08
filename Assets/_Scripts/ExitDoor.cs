@@ -15,6 +15,7 @@ public class ExitDoor : MonoBehaviour
     public Image blackStarterScreen;
     public AudioSource audioSource; 
     public KeyPickup keyPickupScript;
+    public GameObject P4Enemy;
     
     private bool playerInRange = false;
     private bool interactionDisabled = false;
@@ -61,6 +62,7 @@ public class ExitDoor : MonoBehaviour
             interactionDisabled = true;
             Debug.Log("player has won the game!!!Horry shit");
             audioSource.Play();
+            P4Enemy.SetActive(false);
         
             StartCoroutine(FadeOutCoroutine());
 

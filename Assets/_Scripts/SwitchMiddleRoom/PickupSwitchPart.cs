@@ -5,6 +5,7 @@ using System.Collections;
 public class PickupSwitchPart : MonoBehaviour
 {
     public TextMeshProUGUI pickupText;
+    public TextMeshProUGUI enemyPromt;
     public LayerMask whatIsPlayer;
     private bool playerInRange = false;
     public SwitchPartsCollector switchPartsCollector;
@@ -35,6 +36,7 @@ public class PickupSwitchPart : MonoBehaviour
             switchPartsCollector.CollectSwitchPart();
             pickupText.gameObject.SetActive(false);
             monsterSpawn.SetActive(true);
+            enemyPromt.gameObject.SetActive(true);
             audioSource.Play();
             Destroy(gameObject);
         }
