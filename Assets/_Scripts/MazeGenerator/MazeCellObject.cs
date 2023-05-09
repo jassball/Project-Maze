@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MazeCellObject : MonoBehaviour
 {
+    //The gameobjects wil be set in unity
     [SerializeField] GameObject topWall;
     [SerializeField] GameObject bottomWall;
     [SerializeField] GameObject rightWall;

@@ -9,7 +9,7 @@ public class MazeGenerator : MonoBehaviour
     public int startX, startY;
     MazeCell[,] maze;
 
-
+    //This is the maze generator. it generates an area of cells and deletes cell walls depending on the cells next to it
     Vector2Int currentCell;
 
     public MazeCell[,] GetMaze(){
