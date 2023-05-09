@@ -10,13 +10,13 @@ public class cameraSwitcher : MonoBehaviour
     public  CinemachineVirtualCamera currentCamera;
     public CinemachineVirtualCamera menuCam;
    
-    
+    // adds prority to menucam so this cam is 1 higher the the others 
     public void Start()
     {
         menuCam = currentCamera;
         currentCamera.Priority++;
     }
-
+    // switch camera from current to target
     public void UpdateCamera(CinemachineVirtualCamera target)
     {
         
@@ -27,9 +27,7 @@ public class cameraSwitcher : MonoBehaviour
         currentCamera.Priority++;
         Debug.Log("Button clicked");
 
-        if (Input.GetKeyDown(KeyCode.Escape)){
-           
-        }
+       
     
     }
 }

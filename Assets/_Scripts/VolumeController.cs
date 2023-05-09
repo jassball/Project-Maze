@@ -7,12 +7,14 @@ public class VolumeController : MonoBehaviour
 {
     public Slider volumeSlider;
     public AudioSource audioSource;
-    // Start is called before the first frame update
+  
+    // finds the slider and listen to changes
     void Start()
     {
         volumeSlider.onValueChanged.AddListener(onValueChanged);
         
     }
+    // when the slider moves the volume is ajusted
     private void onValueChanged(float volume)
     {
         audioSource.volume = volume;
