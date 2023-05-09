@@ -16,11 +16,7 @@ public class pausegamemanager : MonoBehaviour
     public PlayerHealth playerHealth;
    
 
-    private Vector3 originalCameraPosition;
-    private Quaternion originalCameraRotation;
-
-    private GameObject playerCamHolder; // Reference to the player camera GameObject
-
+    // finding all the buttons. ustop freeztime
     void Start()
     {
         resumButton.onClick.AddListener(Play);
@@ -28,10 +24,10 @@ public class pausegamemanager : MonoBehaviour
         mainMenu.onClick.AddListener(MainMenuButton);
         Time.timeScale = 1f;
 
-        playerCamHolder = GameObject.Find("playerCamHolder"); // Find the player camera GameObject by name
+        
     }
 
-    // Update is called once per frame
+    // update if you press the esc key to pause the game. if you are dead it will not run
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && playerHealth.currentHealth >0)
@@ -50,7 +46,7 @@ public class pausegamemanager : MonoBehaviour
             PauseGamePanel.SetActive(false);
         }
     }
-
+    // activet the pausecanvas and freezes time. locks the mouse curse to visible, mutes the game
     void Stop()
     {
         PauseGamePanel.SetActive(true);
@@ -60,16 +56,11 @@ public class pausegamemanager : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        // Freeze the position and rotation of the player camera
-        if (playerCamHolder != null)
-        {
-            originalCameraPosition = playerCamHolder.transform.position;
-            originalCameraRotation = playerCamHolder.transform.rotation;
-        }
-        //mute
-        AudioListener.pause = true;
+       
+            //mute
+            AudioListener.pause = true;
     }
-
+    // remove pausecanvas,unfreez the game. the mous curser disapair, audio unmuted.
     public void Play()
     {
         PauseGamePanel.SetActive(false);
@@ -82,19 +73,14 @@ public class pausegamemanager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        // Restore the position and rotation of the player camera
-        if (playerCamHolder != null)
-        {
-            playerCamHolder.transform.position = originalCameraPosition;
-            playerCamHolder.transform.rotation = originalCameraRotation;
-        }
+       
 
         //unmute
         AudioListener.pause = false;
 
         Debug.Log("resumButton!!");
     }
-
+    // function for the mainmenubutton to change scene back to main menu and unfreez the game
     public void MainMenuButton()
     {
         SceneManager.LoadScene("MainMenu");
@@ -102,7 +88,7 @@ public class pausegamemanager : MonoBehaviour
         Paused = false;
         Debug.Log("back to menu");
     }
-
+    // restartbutton reload lv 1 the player starts at the begining
     public void RestartGame()
     {
         SceneManager.LoadScene("Level 1");
