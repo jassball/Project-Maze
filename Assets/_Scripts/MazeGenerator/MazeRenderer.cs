@@ -8,7 +8,7 @@ public class MazeRenderer : MonoBehaviour
     [SerializeField] GameObject MazeCellPrefab;
 
     public float CellSize = 1f;
-
+    //This generates the maze using the maze generator
     private void Start(){
         MazeCell[,] maze = mazeGenerator.GetMaze();
 
