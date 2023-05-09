@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetKeyUp(crouchKey)){
             transform.localScale = new Vector3(transform.localScale.x, startYscale, transform.localScale.z);
-            playerHeight = 3;
+            playerHeight = 2;
         }
         
     }
